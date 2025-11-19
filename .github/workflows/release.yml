@@ -25,6 +25,7 @@ jobs:
       - name: Get version from pubspec.yaml
         id: version
         run: echo "::set-output name=version::$(grep "version:" pubspec.yaml | cut -c10-)"
+        working-directory: football_news
 
       - name: Setup Java
         uses: actions/setup-java@v3
@@ -39,9 +40,11 @@ jobs:
 
       - name: Get packages
         run: flutter pub get
+        working-directory: football_news
 
       - name: Build APK
         run: flutter build apk --split-per-abi
+        working-directory: football_news
 
       - name: Get current date
         id: date
@@ -50,6 +53,7 @@ jobs:
       - name: Generate unique tag
         id: tag
         run: echo "::set-output name=tag::v${{ steps.version.outputs.version }}-$(date +'%Y%m%d%H%M%S')"
+        working-directory: football_news
 
       - name: Release APK
         uses: ncipollo/release-action@v1
